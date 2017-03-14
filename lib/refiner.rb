@@ -26,6 +26,7 @@ module Refiner
       unless merged_query["keyword"].present?
         merged_query["keyword"] = EMPTY_KEYWORD_FALLBACK
       end
+      merged_query
     end
 
     def refiner_active? scope, slug
