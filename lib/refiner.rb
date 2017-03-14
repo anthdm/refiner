@@ -17,6 +17,9 @@ module Refiner
       puts 'REFINER LOG'
       puts merged_query.inspect
       puts '===================='
+      unless merged_query["keyword"].present?
+        merged_query["keyword"] = EMPTY_KEYWORD_FALLBACK
+      end
 
       filter_path = merged_query.keys.map { |key| [key, merged_query[key]] }.join('/')
       puts 'FILTER PATH'
