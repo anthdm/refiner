@@ -10,8 +10,14 @@ module Refiner
       replace: -> (query, scope, slug) { slug.to_s }
     }
 
+    EMPTY_KEYWORD_FALLBACK = "_all"
+
     def refiner_path(scope, slug, type, search: nil, fallback: nil)
       merged_query = refiners type, scope.to_s, slug
+      puts 'REFINER LOG'
+      puts merged_query.inspect
+      puts '===================='
+
       filter_path = merged_query.keys.map { |key| [key, merged_query[key]] }.join('/')
       merged_query.present? ? self.send(search, filter_path) : self.send(fallback)
     end
