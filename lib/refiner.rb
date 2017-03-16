@@ -17,8 +17,6 @@ module Refiner
       merged_query = add_keyword_fallback merged_query
 
       filter_path = merged_query.keys.map { |key| [key, merged_query[key]] }.join('/')
-      puts 'FILTER PATH'
-      puts filter_path.inspect
       merged_query.present? ? self.send(search, filter_path) : self.send(fallback)
     end
 
