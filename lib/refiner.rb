@@ -10,11 +10,21 @@ module Refiner
       replace: -> (query, scope, slug) { slug.to_s }
     }
 
+    EMPTY_KEYWORD_FALLBACK = "_all"
+
     def refiner_path(scope, slug, type, search: nil, fallback: nil)
       merged_query = refiners type, scope.to_s, slug
+      merged_query = add_keyword_fallback merged_query
 
       filter_path = merged_query.keys.map { |key| [key, merged_query[key]] }.join('/')
       merged_query.present? ? self.send(search, filter_path) : self.send(fallback)
+    end
+
+    def add_keyword_fallback(merged_query)
+      unless merged_query["keyword"].present?
+        merged_query["keyword"] = EMPTY_KEYWORD_FALLBACK
+      end
+      merged_query
     end
 
     def refiner_active? scope, slug
